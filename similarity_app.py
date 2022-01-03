@@ -6,6 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import tensorflow as tf
 tf.compat.v1.enable_eager_execution()
+print(tf.executing_eagerly())
 
 import tensorflow_hub as hub
 
