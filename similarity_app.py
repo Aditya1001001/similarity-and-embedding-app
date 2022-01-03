@@ -36,7 +36,7 @@ st.set_page_config(
 @st.experimental_singleton
 def prepare_models():
     elmo_model = ElmoModel()
-    elmo_model.load("/content/209.zip")
+    elmo_model.load("/content/elmo")
     transformer_model = SentenceTransformer('stsb-roberta-large')
     USE_model = hub.load(module_url)
     nlp = spacy.load('en_core_web_md')
@@ -97,7 +97,7 @@ def elmo_similarity(sentence):
         for j in range(len(word_vectors)):
             row.append(cosine_similarity(word_vectors[i].reshape(1, -1), word_vectors[j].reshape(1, -1))[0][0])
         similarity.append(row)
-        return similarity
+    return similarity
 
 # Doc2Vec
 def tagged_document(list_of_list_of_words):
