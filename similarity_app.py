@@ -5,6 +5,8 @@ import spacy
 import seaborn as sns
 import matplotlib.pyplot as plt
 import tensorflow as tf
+tf.compat.v1.enable_eager_execution()
+
 import tensorflow_hub as hub
 
 from sklearn.metrics.pairwise import cosine_similarity
