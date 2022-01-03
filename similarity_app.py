@@ -7,10 +7,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_hub as hub
 
-# fix for stream cache error
-# import keras.backend.tensorflow_backend as tb
-# tb._SYMBOLIC_SCOPE.value = True
-
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.feature_extraction.text import CountVectorizer
@@ -26,6 +22,16 @@ from nltk.tokenize import word_tokenize
 
 elmo_model = ElmoModel()
 module_url = "https://tfhub.dev/google/universal-sentence-encoder/4" 
+
+st.set_page_config(
+   page_title="Text Similarity and Embedding Techniques Demo",
+   page_icon="🛠",
+   layout="centered",
+   initial_sidebar_state="expanded",
+   menu_items={
+         'About': 'How bla bla bla',
+            }
+)
 
 @st.experimental_singleton
 def prepare_models():
@@ -180,16 +186,6 @@ def create_heatmap(similarity, sentences, words = False, cmap = "YlGnBu"):
     return fig
 
 # StreamLit App        
-st.set_page_config(
-   page_title="Text Similarity and Embedding Techniques Demo",
-   page_icon="🛠",
-   layout="centered",
-   initial_sidebar_state="expanded",
-   menu_items={
-         'About': 'How bla bla bla',
-            }
-)
-
 def get_sentences(n):
     if n == 2:
         sentence_1 = st.text_input('Sentence 1', 'Investors unfazed by correction as crypto funds see $154 million inflows', max_chars = 100, 
