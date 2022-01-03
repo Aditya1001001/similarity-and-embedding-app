@@ -74,7 +74,7 @@ def word2vec(sentences, metric = 'cosine'):
             if metric == 'cosine':
               row.append(docs[i].similarity(docs[j]))
             else:
-               row.append(1/np.exp((euclidean_distances(docs[i].vector, doc[j].vector))))
+               row.append(1/np.exp((euclidean_distances(docs[i].vector, docs[j].vector))))
         similarity.append(row)
     return similarity        
 
@@ -273,7 +273,7 @@ if measure == 'Euclidean':
     else:
         st.write(create_heatmap(similarity, sentences))
 
-if measure == 'cosine':
+if measure == 'Cosine':
     st.subheader('Embedding Type')
     emb_type = st.radio(
         "What's embedding type do you want to try?",
