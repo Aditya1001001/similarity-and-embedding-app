@@ -326,6 +326,9 @@ if measure == 'Cosine':
         similarity = sentence_emb_methods[emb_type](sentences,0 if len(sentences) == 2 else 1)
 
         if no_sent == 'Pair':
-            st.write(round(similarity[0][1],3))
+            if emb_type == 'Doc2Vec':
+              st.write(round(similarity,3))
+            else:
+              st.write(round(similarity[0][1],3))
         else:
             st.write(create_heatmap(similarity, sentences))
