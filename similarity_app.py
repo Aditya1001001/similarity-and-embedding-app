@@ -36,7 +36,7 @@ st.set_page_config(
 @st.experimental_singleton
 def prepare_models():
     elmo_model = ElmoModel()
-    elmo_model.load("/content/elmo")
+    elmo_model.load("/content/209.zip")
     transformer_model = SentenceTransformer('stsb-roberta-large')
     USE_model = hub.load(module_url)
     nlp = spacy.load('en_core_web_md')
