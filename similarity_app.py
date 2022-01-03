@@ -74,9 +74,9 @@ def word2vec(sentences, metric = 'cosine'):
             if metric == 'cosine':
               row.append(docs[i].similarity(docs[j]))
             else:
-               row.append(1/np.exp((euclidean_distances(docs[i].vector, docs[j].vector))))
+               row.append(1/np.exp((euclidean_distances(docs[i].vector.reshape(1, -1), docs[j].vector.reshape(1, -1))[0][0])))
         similarity.append(row)
-    return similarity        
+    return similarity    
 
 # elmo
 def elmo_similarity(sentence):
