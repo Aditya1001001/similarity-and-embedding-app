@@ -202,16 +202,17 @@ def get_sentences(n):
         sentence_2 = st.text_input('Sentence 2', 'Bitcoin, Ethereum prices continue descent, but crypto funds see inflows', max_chars = 100, 
                         help = 'Sentence To Test',
                         placeholder = 'Sentence 2')
-        sentence_3 = st.text_input('Sentence 3', 'Investors unfazed by correction as crypto funds see $154 million inflows', max_chars = 100, 
+        sentence_3 = st.text_input('Sentence 3', 'The surge in euro area inflation during the pandemic: transitory but with upside risks', max_chars = 100, 
                         help = 'Sentence To Test',
                         placeholder = 'Sentence 3')
-        sentence_4 = st.text_input('Sentence 4', 'Bitcoin, Ethereum prices continue descent, but crypto funds see inflows', max_chars = 100, 
+        sentence_4 = st.text_input('Sentence 4', "Inflation: why it's temporary and raising interest rates will do more harm than good", max_chars = 100, 
                         help = 'Sentence To Test',
                         placeholder = 'Sentence 4')
-        sentence_5 = st.text_input('Sentence 5', 'Investors unfazed by correction as crypto funds see $154 million inflows', max_chars = 100, 
+        sentence_5 = st.text_input('Sentence 5', 'Will Cryptocurrency Protect Against Inflation?', max_chars = 100, 
                         help = 'Sentence To Test',
                         placeholder = 'Sentence 5')
         return [sentence_1, sentence_2, sentence_3, sentence_4, sentence_5]
+
 
 sentence_emb_methods = {'Doc2Vec': doc2vec_cosine,
 'Universal Search Encoder' : USE_cosine,
