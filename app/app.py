@@ -230,7 +230,7 @@ def get_sentences(n):
 word_emb_methods = {'Bag Of Words':count_vectorizer,
 'TF-IDF' : tfid_vectorizer, 'Word2Vec' : word2vec}
 
-def get_similarity(metric):
+def get_embedding_and_sentences(metric):
     st.subheader('Sentences To Test')
     no_sent = st.radio(
      "Pair of sentences or five sentences?",
@@ -243,7 +243,7 @@ def get_similarity(metric):
      "What's embedding type do you want to try?",
      ('Bag Of Words', 'TF-IDF', 'Word2Vec'))
 
-    return word_emb_methods[emb_type](sentences, metric), no_sent
+    return word_emb_methods[emb_type](sentences, metric), no_sent, sentences
 
 
 
@@ -284,7 +284,7 @@ if measure == 'Jaccard':
 
 if measure == 'Euclidean':
 
-    similarity, no_sent = get_similarity('euclidean')
+    similarity, no_sent, sentences = get_embedding_and_sentences('euclidean')
 
     if no_sent == 'Pair':
         st.write(round(similarity[0][1],3))
@@ -308,12 +308,12 @@ if measure == 'Cosine':
     #     # st.wrte(create_heatmap(similarity, sentence, words = True))
 
     # if emb_type == 'Traditional Embeddings':
-    similarity, no_sent = get_similarity('cosine')
+    similarity, no_sent, sentences = get_embedding_and_sentences('cosine')
     if no_sent == 'Pair':
         st.write(round(similarity[0][1],3))
     else:
         st.write(create_heatmap(similarity, sentences))
-        
+
     # if emb_type == 'Sentence Embeddings':
     #     no_sent = st.radio(
     #     "Pair of sentences or five sentences?",
