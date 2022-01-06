@@ -1,7 +1,5 @@
 numpy
 pandas
-gensim
-nltk
 spacy
 sklearn
 tensorflow

@@ -18,10 +18,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # from sentence_transformers import SentenceTransformer, util
 # from simple_elmo import ElmoModel
 
-import gensim
-import nltk
-nltk.download('punkt')
-from nltk.tokenize import word_tokenize
+# import gensim
+# import nltk
+# nltk.download('punkt')
+# from nltk.tokenize import word_tokenize
 
 # elmo_model = ElmoModel()
 module_url = "https://tfhub.dev/google/universal-sentence-encoder/4" 
@@ -85,50 +85,50 @@ def word2vec(sentences, metric = 'cosine'):
     return similarity    
 
 # elmo
-def elmo_similarity(sentence):
-    elmo_vectors = elmo_model.get_elmo_vectors(sentence, layers="average")
-    elmo_vectors = np.moveaxis(elmo_vectors, [0, 1, 2], [1, 0, 2])
-    # get word embeddings
-    word_vectors = []
-    for word in sentence.split(" "):
-        start_idx = sentence.index(word)
-        l = len(word)
-        # print(sentence[start_idx: start_idx+l])
-        word_vectors.append(np.sum(elmo_vectors[0][start_idx:start_idx + l], axis = 0)/l)
+# def elmo_similarity(sentence):
+#     elmo_vectors = elmo_model.get_elmo_vectors(sentence, layers="average")
+#     elmo_vectors = np.moveaxis(elmo_vectors, [0, 1, 2], [1, 0, 2])
+#     # get word embeddings
+#     word_vectors = []
+#     for word in sentence.split(" "):
+#         start_idx = sentence.index(word)
+#         l = len(word)
+#         # print(sentence[start_idx: start_idx+l])
+#         word_vectors.append(np.sum(elmo_vectors[0][start_idx:start_idx + l], axis = 0)/l)
 
-    #calculate similarity
-    similarity = []
-    for i in range(len(word_vectors)):
-        row = []
-        for j in range(len(word_vectors)):
-            row.append(cosine_similarity(word_vectors[i].reshape(1, -1), word_vectors[j].reshape(1, -1))[0][0])
-        similarity.append(row)
-    return similarity
+#     #calculate similarity
+#     similarity = []
+#     for i in range(len(word_vectors)):
+#         row = []
+#         for j in range(len(word_vectors)):
+#             row.append(cosine_similarity(word_vectors[i].reshape(1, -1), word_vectors[j].reshape(1, -1))[0][0])
+#         similarity.append(row)
+#     return similarity
 
 # Doc2Vec
-def tagged_document(list_of_list_of_words):
-    for i, list_of_words in enumerate(list_of_list_of_words):
-        yield gensim.models.doc2vec.TaggedDocument(list_of_words, [i])
+# def tagged_document(list_of_list_of_words):
+#     for i, list_of_words in enumerate(list_of_list_of_words):
+#         yield gensim.models.doc2vec.TaggedDocument(list_of_words, [i])
 
-def doc2vec_cosine(sentences, flag):
-    tokenized_sent = []
-    for s in sentences:
-        tokenized_sent.append(word_tokenize(s.lower()))
-    training_data = list(tagged_document(tokenized_sent))
-    doc2vec_model = gensim.models.doc2vec.Doc2Vec(vector_size=40, min_count=2, epochs=10)
-    doc2vec_model.build_vocab(training_data)
-    doc2vec_model.train(training_data, total_examples=doc2vec_model.corpus_count, epochs=doc2vec_model.epochs)
-    vectors = [doc2vec_model.infer_vector([word for word in sent]).reshape(1,-1) for sent in sentences]
-    if flag == 0:
-        return cosine_similarity(vectors[0], vectors[1])[0][0]
-    else:
-        similarity = []
-        for i in range(len(sentences)):
-            row = []
-            for j in range(len(sentences)):
-                row.append(cosine_similarity(vectors[i], vectors[j])[0][0])
-            similarity.append(row)
-        return similarity
+# def doc2vec_cosine(sentences, flag):
+#     tokenized_sent = []
+#     for s in sentences:
+#         tokenized_sent.append(word_tokenize(s.lower()))
+#     training_data = list(tagged_document(tokenized_sent))
+#     doc2vec_model = gensim.models.doc2vec.Doc2Vec(vector_size=40, min_count=2, epochs=10)
+#     doc2vec_model.build_vocab(training_data)
+#     doc2vec_model.train(training_data, total_examples=doc2vec_model.corpus_count, epochs=doc2vec_model.epochs)
+#     vectors = [doc2vec_model.infer_vector([word for word in sent]).reshape(1,-1) for sent in sentences]
+#     if flag == 0:
+#         return cosine_similarity(vectors[0], vectors[1])[0][0]
+#     else:
+#         similarity = []
+#         for i in range(len(sentences)):
+#             row = []
+#             for j in range(len(sentences)):
+#                 row.append(cosine_similarity(vectors[i], vectors[j])[0][0])
+#             similarity.append(row)
+#         return similarity
 
 
 # USE
@@ -140,18 +140,18 @@ def USE_cosine(sentences, flag):
         return cosine_similarity(embeddings)
 
 # Sentence Transformer
-def transformer_cosine(sentences, flag):
-    embeddings = transformer_model.encode(sentences, convert_to_tensor=True)
-    if flag == 0:
-        return util.pytorch_cos_sim(embeddings[0], embeddings[1]).item()
-    else:
-        similarity = []
-        for i in range(len(sentences)):
-            row = []
-            for j in range(len(sentences)):
-                row.append(util.pytorch_cos_sim(embeddings[i], embeddings[j]).item())
-            similarity.append(row)
-        return similarity
+# def transformer_cosine(sentences, flag):
+#     embeddings = transformer_model.encode(sentences, convert_to_tensor=True)
+#     if flag == 0:
+#         return util.pytorch_cos_sim(embeddings[0], embeddings[1]).item()
+#     else:
+#         similarity = []
+#         for i in range(len(sentences)):
+#             row = []
+#             for j in range(len(sentences)):
+#                 row.append(util.pytorch_cos_sim(embeddings[i], embeddings[j]).item())
+#             similarity.append(row)
+#         return similarity
 
 # helper methods
 tokenize = spacy.load('en_core_web_sm', disable=['parser', 'ner',
@@ -220,9 +220,13 @@ def get_sentences(n):
         return [sentence_1, sentence_2, sentence_3, sentence_4, sentence_5]
 
 
-sentence_emb_methods = {'Doc2Vec': doc2vec_cosine,
-'Universal Search Encoder' : USE_cosine,
-'Sentence Transformers': transformer_cosine}
+# sentence_emb_methods = {'Doc2Vec': doc2vec_cosine,
+# 'Universal Search Encoder' : USE_cosine,
+# 'Sentence Transformers': transformer_cosine}
+
+sentence_emb_methods = {
+'Universal Search Encoder' : USE_cosine}
+
 
 word_emb_methods = {'Bag Of Words':count_vectorizer,
 'TF-IDF' : tfid_vectorizer, 'Word2Vec' : word2vec}
@@ -323,12 +327,12 @@ if measure == 'Cosine':
 
         st.subheader('Embedding Type')
 
-        emb_type = st.radio(
-        "What's embedding type do you want to try?",
-        ('Doc2Vec', 'Universal Search Encoder'))
-        # ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
+        # emb_type = st.radio(
+        # "What's embedding type do you want to try?",
+        # ('Doc2Vec', 'Universal Search Encoder'))
+        # # ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
 
-        similarity = sentence_emb_methods[emb_type](sentences,0 if len(sentences) == 2 else 1)
+        similarity = sentence_emb_methods['Universal Search Encoder'](sentences,0 if len(sentences) == 2 else 1)
 
         if no_sent == 'Pair':
             st.write(round(similarity,3))
