@@ -4,9 +4,9 @@ import pandas as pd
 import spacy
 import seaborn as sns
 import matplotlib.pyplot as plt
-import tensorflow as tf
-# tf.compat.v1.enable_eager_execution()
-print(tf.executing_eagerly())
+# import tensorflow as tf
+# # tf.compat.v1.enable_eager_execution()
+# print(tf.executing_eagerly())
 
 import tensorflow_hub as hub
 
@@ -24,7 +24,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # from nltk.tokenize import word_tokenize
 
 # elmo_model = ElmoModel()
-module_url = "https://tfhub.dev/google/universal-sentence-encoder/4" 
+# module_url = "https://tfhub.dev/google/universal-sentence-encoder/4" 
 
 st.set_page_config(
    page_title="Text Similarity and Embedding Techniques Demo",
@@ -42,13 +42,13 @@ def prepare_models():
     # elmo_model.load("/content/elmo")
     # stsb-roberta-large 
     # transformer_model = SentenceTransformer('stsb-distilbert-base')
-    USE_model = hub.load(module_url)
+    # USE_model = hub.load(module_url)
     nlp = spacy.load('en_core_web_md')
-    return USE_model, nlp
+    return  nlp
     # return transformer_model, USE_model, elmo_model, nlp
 
 # transformer_model, USE_model, elmo_model, nlp = prepare_models()
-USE_model, nlp = prepare_models()
+nlp = prepare_models()
 
 # count vectorizer
 def count_vectorizer(sentences, metric = 'cosine'):
@@ -132,12 +132,12 @@ def word2vec(sentences, metric = 'cosine'):
 
 
 # USE
-def USE_cosine(sentences, flag):
-    embeddings = USE_model(sentences)
-    if flag == 0:
-        return cosine_similarity(embeddings)[0][1]
-    else:
-        return cosine_similarity(embeddings)
+# def USE_cosine(sentences, flag):
+#     embeddings = USE_model(sentences)
+#     if flag == 0:
+#         return cosine_similarity(embeddings)[0][1]
+#     else:
+#         return cosine_similarity(embeddings)
 
 # Sentence Transformer
 # def transformer_cosine(sentences, flag):
@@ -286,9 +286,9 @@ if measure == 'Euclidean':
 
 if measure == 'Cosine':
     st.subheader('Embedding Type')
-    emb_type = st.radio(
-        "What's embedding type do you want to try?",
-        ('Traditional Embeddings', 'Sentence Embeddings'))
+    # emb_type = st.radio(
+    #     "What's embedding type do you want to try?",
+    #     ('Traditional Embeddings', 'Sentence Embeddings'))
         # ('Traditional Embeddings', 'Contextual Word Embeddings', 'Sentence Embeddings'))
     st.subheader('Sentence(s) To Test')
 
@@ -300,7 +300,8 @@ if measure == 'Cosine':
     #     # similarity = elmo_similarity(sentence)
     #     # st.wrte(create_heatmap(similarity, sentence, words = True))
 
-    if emb_type == 'Traditional Embeddings':
+    # if emb_type == 'Traditional Embeddings':
+    if True:
         no_sent = st.radio(
         "Pair of sentences or five sentences?",
         ('Pair', 'Five'))
@@ -319,22 +320,22 @@ if measure == 'Cosine':
         else:
             st.write(create_heatmap(similarity, sentences))
 
-    if emb_type == 'Sentence Embeddings':
-        no_sent = st.radio(
-        "Pair of sentences or five sentences?",
-        ('Pair', 'Five'))
-        sentences = get_sentences(2 if no_sent == 'Pair' else 5)
+    # if emb_type == 'Sentence Embeddings':
+    #     no_sent = st.radio(
+    #     "Pair of sentences or five sentences?",
+    #     ('Pair', 'Five'))
+    #     sentences = get_sentences(2 if no_sent == 'Pair' else 5)
 
-        st.subheader('Embedding Type')
+    #     st.subheader('Embedding Type')
 
         # emb_type = st.radio(
         # "What's embedding type do you want to try?",
         # ('Doc2Vec', 'Universal Search Encoder'))
         # # ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
 
-        similarity = sentence_emb_methods['Universal Search Encoder'](sentences,0 if len(sentences) == 2 else 1)
+        # similarity = sentence_emb_methods['Universal Search Encoder'](sentences,0 if len(sentences) == 2 else 1)
 
-        if no_sent == 'Pair':
-            st.write(round(similarity,3))
-        else:
-            st.write(create_heatmap(similarity, sentences))
+        # if no_sent == 'Pair':
+        #     st.write(round(similarity,3))
+        # else:
+        #     st.write(create_heatmap(similarity, sentences))
