@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # # tf.compat.v1.enable_eager_execution()
 # print(tf.executing_eagerly())
 
-import tensorflow_hub as hub
+# import tensorflow_hub as hub
 
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
