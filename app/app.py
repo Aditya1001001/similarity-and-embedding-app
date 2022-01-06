@@ -309,7 +309,11 @@ if measure == 'Cosine':
 
     # if emb_type == 'Traditional Embeddings':
     similarity, no_sent = get_similarity('cosine')
-
+    if no_sent == 'Pair':
+        st.write(round(similarity[0][1],3))
+    else:
+        st.write(create_heatmap(similarity, sentences))
+        
     # if emb_type == 'Sentence Embeddings':
     #     no_sent = st.radio(
     #     "Pair of sentences or five sentences?",
