@@ -44,11 +44,13 @@ def prepare_models():
     # transformer_model = SentenceTransformer('stsb-distilbert-base')
     # USE_model = hub.load(module_url)
     nlp = spacy.load('en_core_web_md')
-    return  nlp
+    tokenize = spacy.load('en_core_web_sm', disable=['parser', 'ner',
+                                            'tok2vec', 'attribute_ruler'])
+    return  nlp, tokenize
     # return transformer_model, USE_model, elmo_model, nlp
 
 # transformer_model, USE_model, elmo_model, nlp = prepare_models()
-nlp = prepare_models()
+nlp, tokenize = prepare_models()
 
 # count vectorizer
 def count_vectorizer(sentences, metric = 'cosine'):
@@ -154,8 +156,6 @@ def word2vec(sentences, metric = 'cosine'):
 #         return similarity
 
 # helper methods
-tokenize = spacy.load('en_core_web_sm', disable=['parser', 'ner',
-                                            'tok2vec', 'attribute_ruler'])
 
 def remove_punctuations(normalized_tokens):
     punctuations=['?',':','!',',','.',';','|','(',')','--']
