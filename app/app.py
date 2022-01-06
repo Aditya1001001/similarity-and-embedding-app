@@ -258,6 +258,7 @@ measure = st.radio(
      ('Jaccard', 'Euclidean', 'Cosine'))
 
 if measure == 'Jaccard':
+    st.subheader('Sentences To Test')
     no_sent = st.radio(
      "Pair of sentences or five sentences?",
      ('Pair', 'Five'))
