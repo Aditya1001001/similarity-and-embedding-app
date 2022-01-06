@@ -15,7 +15,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from sentence_transformers import SentenceTransformer, util
+# from sentence_transformers import SentenceTransformer, util
 # from simple_elmo import ElmoModel
 
 import gensim
@@ -40,14 +40,15 @@ st.set_page_config(
 def prepare_models():
     # elmo_model = ElmoModel()
     # elmo_model.load("/content/elmo")
-    transformer_model = SentenceTransformer('stsb-roberta-large')
+    # stsb-roberta-large 
+    # transformer_model = SentenceTransformer('stsb-distilbert-base')
     USE_model = hub.load(module_url)
     nlp = spacy.load('en_core_web_md')
-    return transformer_model, USE_model, nlp
+    return USE_model, nlp
     # return transformer_model, USE_model, elmo_model, nlp
 
 # transformer_model, USE_model, elmo_model, nlp = prepare_models()
-transformer_model, USE_model, nlp = prepare_models()
+USE_model, nlp = prepare_models()
 
 # count vectorizer
 def count_vectorizer(sentences, metric = 'cosine'):
@@ -324,7 +325,8 @@ if measure == 'Cosine':
 
         emb_type = st.radio(
         "What's embedding type do you want to try?",
-        ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
+        ('Doc2Vec', 'Universal Search Encoder'))
+        # ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
 
         similarity = sentence_emb_methods[emb_type](sentences,0 if len(sentences) == 2 else 1)
 

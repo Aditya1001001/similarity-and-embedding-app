@@ -9,5 +9,3 @@ tensorflow_hub
 matplotlib
 seaborn
 streamlit
-transformers
-sentence-transformers
