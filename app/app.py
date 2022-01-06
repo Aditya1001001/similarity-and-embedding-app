@@ -224,8 +224,8 @@ def get_sentences(n):
 # 'Universal Search Encoder' : USE_cosine,
 # 'Sentence Transformers': transformer_cosine}
 
-sentence_emb_methods = {
-'Universal Search Encoder' : USE_cosine}
+# sentence_emb_methods = {
+# 'Universal Search Encoder' : USE_cosine}
 
 
 word_emb_methods = {'Bag Of Words':count_vectorizer,
