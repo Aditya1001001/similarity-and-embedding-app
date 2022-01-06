@@ -1,0 +1,13 @@
+numpy
+pandas
+gensim
+nltk
+spacy
+sklearn
+tensorflow
+tensorflow_hub
+matplotlib
+seaborn
+streamlit
+transformers
+sentence-transformers
