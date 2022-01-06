@@ -1,8 +1,8 @@
-name: digitalocean_docker_streamlit
+name: similarity-and-embedding-app
 services:
 - dockerfile_path: Dockerfile
   github:
     branch: main
     deploy_on_push: true
-    repo: dmancevo/digitalocean_docker_streamlit
-  name: digitalocean_docker_streamlit
+    repo: Aditya1001001/similarity-and-embedding-app
+  name: similarity-and-embedding-app

@@ -1,8 +1,8 @@
 spec:
-  name: digitalocean_docker_streamlit
+  name: similarity-and-embedding-app
   services:
   - dockerfile_path: Dockerfile
     git:
       branch: main
-      repo_clone_url: https://github.com/dmancevo/digitalocean_docker_streamlit.git
-    name: digitalocean_docker_streamlit
+      repo_clone_url: https://github.com/Aditya1001001/similarity-and-embedding-app.git
+    name: similarity-and-embedding-app
