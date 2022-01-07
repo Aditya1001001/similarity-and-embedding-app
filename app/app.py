@@ -135,7 +135,7 @@ word_emb_methods = {'Bag Of Words':count_vectorizer,
 def get_embedding_and_sentences(sentences, metric):
 
     emb_type = st.radio(
-     "What's embedding type do you want to use to calculate?",
+     "What's embedding type do you want to use to calculate similarity?",
      ('Bag Of Words', 'TF-IDF', 'Word2Vec'))
 
     return word_emb_methods[emb_type](sentences, metric), no_sent
@@ -144,11 +144,12 @@ def get_embedding_and_sentences(sentences, metric):
 st.title('Text Similarity Measures Live Demo')
 st.write('Text Similarity Score measures how alike or different two text \
     documents are. As simple as the idea might sound, many Natural Language \
-    Processing applications use similarity behind the scenes. \n This app enables \
+    Processing applications use similarity behind the scenes. This app enables \
     you to play around with the three most common text similarity measures \
-    along with a few embedding methods. \nTo learn more about text similarity \
+    along with a few embedding methods.')
+st.write('To learn more about text similarity \
     and embedding methods, read our in-depth article \
-    [here](https://newscatcherapi.com/blog/text-similarity-measures-and-text-embedding-methods)')
+    [here](https://newscatcherapi.com/blog/text-similarity-measures-and-text-embedding-methods).')
 
 measure = st.radio(
      "What's similarity metric do you want to try?",
@@ -171,8 +172,8 @@ if measure == 'Jaccard':
             tokens.append(temp)    
         tokens_no_punc = list(map(remove_punctuations, tokens))
         similarity = calc_jaccard(tokens_no_punc)
-        st.write("The similarity score is measured in the range of 0 to 1. \
-             Here's the pairwise similarity score of the above sentences:")
+        st.write("Similarity Scores lie in the range of 0 to 1. \
+             Here's the pairwise similarity score(s) of the above sentences:")
         if no_sent == 'Pair':
             st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
         else:
@@ -185,8 +186,8 @@ else:
 
     with st.spinner("Calculating Similarity"):
         similarity, no_sent= get_embedding_and_sentences(sentences, measure.lower())
-        st.write("The similarity score is measured in the range of 0 to 1. \
-            Here's the pairwise similarity score of the above sentences:")
+        st.write("Similarity Scores lie in the range of 0 to 1. \
+            Here's the pairwise similarity score(s) of the above sentences:")
         if no_sent == 'Pair':
             st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
         else:
