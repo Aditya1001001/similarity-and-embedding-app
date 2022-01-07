@@ -149,7 +149,7 @@ st.write('Text Similarity Score measures how alike or different two text \
     along with a few embedding methods.')
 st.write('To learn more about text similarity \
     and embedding methods, read our in-depth article \
-    [here](https://newscatcherapi.com/blog/text-similarity-measures-and-text-embedding-methods).')
+    [here](https://newscatcherapi.com/blog/ultimate-guide-to-text-similarity-with-python).')
 
 measure = st.radio(
      "What's similarity metric do you want to try?",
