@@ -4,27 +4,11 @@ import pandas as pd
 import spacy
 import seaborn as sns
 import matplotlib.pyplot as plt
-# import tensorflow as tf
-# # tf.compat.v1.enable_eager_execution()
-# print(tf.executing_eagerly())
-
-# import tensorflow_hub as hub
 
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-# from sentence_transformers import SentenceTransformer, util
-# from simple_elmo import ElmoModel
-
-# import gensim
-# import nltk
-# nltk.download('punkt')
-# from nltk.tokenize import word_tokenize
-
-# elmo_model = ElmoModel()
-# module_url = "https://tfhub.dev/google/universal-sentence-encoder/4" 
 
 st.set_page_config(
    page_title="Text Similarity and Embedding Techniques Demo",
@@ -32,24 +16,20 @@ st.set_page_config(
    layout="centered",
    initial_sidebar_state="expanded",
    menu_items={
-         'About': 'How bla bla bla',
+        "Get help": None,
+        "Report a Bug": None,
+        "About": None
             }
 )
 
 @st.experimental_singleton
 def prepare_models():
-    # elmo_model = ElmoModel()
-    # elmo_model.load("/content/elmo")
-    # stsb-roberta-large 
-    # transformer_model = SentenceTransformer('stsb-distilbert-base')
-    # USE_model = hub.load(module_url)
+
     nlp = spacy.load('en_core_web_md')
     tokenize = spacy.load('en_core_web_sm', disable=['parser', 'ner',
                                             'tok2vec', 'attribute_ruler'])
     return  nlp, tokenize
-    # return transformer_model, USE_model, elmo_model, nlp
 
-# transformer_model, USE_model, elmo_model, nlp = prepare_models()
 nlp, tokenize = prepare_models()
 
 # count vectorizer
@@ -86,77 +66,7 @@ def word2vec(sentences, metric = 'cosine'):
         similarity.append(row)
     return similarity    
 
-# elmo
-# def elmo_similarity(sentence):
-#     elmo_vectors = elmo_model.get_elmo_vectors(sentence, layers="average")
-#     elmo_vectors = np.moveaxis(elmo_vectors, [0, 1, 2], [1, 0, 2])
-#     # get word embeddings
-#     word_vectors = []
-#     for word in sentence.split(" "):
-#         start_idx = sentence.index(word)
-#         l = len(word)
-#         # print(sentence[start_idx: start_idx+l])
-#         word_vectors.append(np.sum(elmo_vectors[0][start_idx:start_idx + l], axis = 0)/l)
-
-#     #calculate similarity
-#     similarity = []
-#     for i in range(len(word_vectors)):
-#         row = []
-#         for j in range(len(word_vectors)):
-#             row.append(cosine_similarity(word_vectors[i].reshape(1, -1), word_vectors[j].reshape(1, -1))[0][0])
-#         similarity.append(row)
-#     return similarity
-
-# Doc2Vec
-# def tagged_document(list_of_list_of_words):
-#     for i, list_of_words in enumerate(list_of_list_of_words):
-#         yield gensim.models.doc2vec.TaggedDocument(list_of_words, [i])
-
-# def doc2vec_cosine(sentences, flag):
-#     tokenized_sent = []
-#     for s in sentences:
-#         tokenized_sent.append(word_tokenize(s.lower()))
-#     training_data = list(tagged_document(tokenized_sent))
-#     doc2vec_model = gensim.models.doc2vec.Doc2Vec(vector_size=40, min_count=2, epochs=10)
-#     doc2vec_model.build_vocab(training_data)
-#     doc2vec_model.train(training_data, total_examples=doc2vec_model.corpus_count, epochs=doc2vec_model.epochs)
-#     vectors = [doc2vec_model.infer_vector([word for word in sent]).reshape(1,-1) for sent in sentences]
-#     if flag == 0:
-#         return cosine_similarity(vectors[0], vectors[1])[0][0]
-#     else:
-#         similarity = []
-#         for i in range(len(sentences)):
-#             row = []
-#             for j in range(len(sentences)):
-#                 row.append(cosine_similarity(vectors[i], vectors[j])[0][0])
-#             similarity.append(row)
-#         return similarity
-
-
-# USE
-# def USE_cosine(sentences, flag):
-#     embeddings = USE_model(sentences)
-#     if flag == 0:
-#         return cosine_similarity(embeddings)[0][1]
-#     else:
-#         return cosine_similarity(embeddings)
-
-# Sentence Transformer
-# def transformer_cosine(sentences, flag):
-#     embeddings = transformer_model.encode(sentences, convert_to_tensor=True)
-#     if flag == 0:
-#         return util.pytorch_cos_sim(embeddings[0], embeddings[1]).item()
-#     else:
-#         similarity = []
-#         for i in range(len(sentences)):
-#             row = []
-#             for j in range(len(sentences)):
-#                 row.append(util.pytorch_cos_sim(embeddings[i], embeddings[j]).item())
-#             similarity.append(row)
-#         return similarity
-
 # helper methods
-
 def remove_punctuations(normalized_tokens):
     punctuations=['?',':','!',',','.',';','|','(',')','--']
     for word in normalized_tokens:
@@ -187,7 +97,7 @@ def create_heatmap(similarity, sentences, words = False, cmap = "YlGnBu"):
     df = pd.DataFrame(similarity)
     df.columns = labels
     df.index = labels
-    fig, ax = plt.subplots(figsize=(7,7))
+    fig, ax = plt.subplots(figsize=(7,7), vmin=0, vmax=1)
     sns.heatmap(df, cmap=cmap)
     return fig
 
@@ -219,117 +129,65 @@ def get_sentences(n):
                         placeholder = 'Sentence 5')
         return [sentence_1, sentence_2, sentence_3, sentence_4, sentence_5]
 
-
-# sentence_emb_methods = {'Doc2Vec': doc2vec_cosine,
-# 'Universal Search Encoder' : USE_cosine,
-# 'Sentence Transformers': transformer_cosine}
-
-# sentence_emb_methods = {
-# 'Universal Search Encoder' : USE_cosine}
-
 word_emb_methods = {'Bag Of Words':count_vectorizer,
 'TF-IDF' : tfid_vectorizer, 'Word2Vec' : word2vec}
 
-def get_embedding_and_sentences(metric):
-    st.subheader('Sentences To Test')
-    no_sent = st.radio(
-     "Pair of sentences or five sentences?",
-     ('Pair', 'Five'))
-    sentences = get_sentences(2 if no_sent == 'Pair' else 5)
-
-    st.subheader('Embedding Type')
+def get_embedding_and_sentences(sentences, metric):
 
     emb_type = st.radio(
-     "What's embedding type do you want to try?",
+     "What's embedding type do you want to use to calculate?",
      ('Bag Of Words', 'TF-IDF', 'Word2Vec'))
 
-    return word_emb_methods[emb_type](sentences, metric), no_sent, sentences
+    return word_emb_methods[emb_type](sentences, metric), no_sent
 
 
-
-st.title('Text Similarity and Embedding Techniques Demo')
-# st.subheader('No code live demo for News API. This is just a small part of entire functionality,\
-# sign up to unock the full potential')
-
-st.subheader('Simlarity Measures')
+st.title('Text Similarity Measures Live Demo')
+st.write('Text Similarity Score measures how alike or different two text \
+    documents are. As simple as the idea might sound, many Natural Language \
+    Processing applications use similarity behind the scenes. This app enables \
+    you to play around with the three most common text similarity measures \
+    along with a few embedding methods. To learn more about text similarity \
+    and embedding methods, read our in-depth article \
+    [here](https://newscatcherapi.com/blog/text-similarity-measures-and-text-embedding-methods)')
 
 measure = st.radio(
      "What's similarity metric do you want to try?",
      ('Jaccard', 'Euclidean', 'Cosine'))
 
 if measure == 'Jaccard':
-    st.subheader('Sentences To Test')
     no_sent = st.radio(
      "Pair of sentences or five sentences?",
      ('Pair', 'Five'))
-
     sentences = get_sentences(2 if no_sent == 'Pair' else 5)
 
-    docs = [tokenize(sentence) for sentence in sentences]
-    tokens = []
-    
-    for doc in docs:
-        temp = []
-        for token in doc:
-            temp.append(token.lemma_)
-        tokens.append(temp)    
-    tokens_no_punc = list(map(remove_punctuations, tokens))
-    similarity = calc_jaccard(tokens_no_punc)
-
-    # flag for single value vs matrix of similarities
-    if no_sent == 'Pair':
-        st.write(round(similarity[0][1],3))
-    else:
-        st.write(create_heatmap(similarity, sentences))
-
-if measure == 'Euclidean':
-
-    similarity, no_sent, sentences = get_embedding_and_sentences('euclidean')
-
-    if no_sent == 'Pair':
-        st.write(round(similarity[0][1],3))
-    else:
-        st.write(create_heatmap(similarity, sentences))
-
-if measure == 'Cosine':
-    # st.subheader('Embedding Type')
-    # emb_type = st.radio(
-    #     "What's embedding type do you want to try?",
-    #     ('Traditional Embeddings', 'Sentence Embeddings'))
-        # ('Traditional Embeddings', 'Contextual Word Embeddings', 'Sentence Embeddings'))
-    # st.subheader('Sentences To Test')
-
-    # if emb_type == 'Contextual Word Embeddings':
+    with st.spinner("Calculating Similarity"):
+        docs = [tokenize(sentence) for sentence in sentences]
+        tokens = []
         
-    #     sentence = st.text_input('Sentence', 'After stealing gold from the bank vault, the bank robber was seen fishing on the river bank.', max_chars = 100, 
-    #                     help = 'Enter a sentence that uses words in multiple contexts',
-    #                     placeholder = 'Enter a sentence that uses words in multiple contexts')
-    #     # similarity = elmo_similarity(sentence)
-    #     # st.wrte(create_heatmap(similarity, sentence, words = True))
+        for doc in docs:
+            temp = []
+            for token in doc:
+                temp.append(token.lemma_)
+            tokens.append(temp)    
+        tokens_no_punc = list(map(remove_punctuations, tokens))
+        similarity = calc_jaccard(tokens_no_punc)
+        st.write("The similarity score is measured in the range of 0 to 1. \
+             Here's the pairwise similarity score of the above sentences:")
+        if no_sent == 'Pair':
+            st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
+        else:
+            st.write(create_heatmap(similarity, sentences))
+else:
+    no_sent = st.radio(
+     "Pair of sentences or five sentences?",
+     ('Pair', 'Five'))
+    sentences = get_sentences(2 if no_sent == 'Pair' else 5)
 
-    # if emb_type == 'Traditional Embeddings':
-    similarity, no_sent, sentences = get_embedding_and_sentences('cosine')
-    if no_sent == 'Pair':
-        st.write(round(similarity[0][1],3))
-    else:
-        st.write(create_heatmap(similarity, sentences))
-
-    # if emb_type == 'Sentence Embeddings':
-    #     no_sent = st.radio(
-    #     "Pair of sentences or five sentences?",
-    #     ('Pair', 'Five'))
-    #     sentences = get_sentences(2 if no_sent == 'Pair' else 5)
-
-    #     st.subheader('Embedding Type')
-
-        # emb_type = st.radio(
-        # "What's embedding type do you want to try?",
-        # ('Doc2Vec', 'Universal Search Encoder'))
-        # # ('Doc2Vec', 'Universal Search Encoder', 'Sentence Transformers'))
-
-        # similarity = sentence_emb_methods['Universal Search Encoder'](sentences,0 if len(sentences) == 2 else 1)
-
-        # if no_sent == 'Pair':
-        #     st.write(round(similarity,3))
-        # else:
-        #     st.write(create_heatmap(similarity, sentences))
+    with st.spinner("Calculating Similarity"):
+        similarity, no_sent= get_embedding_and_sentences(sentences, measure.lower())
+        st.write("The similarity score is measured in the range of 0 to 1. \
+            Here's the pairwise similarity score of the above sentences:")
+        if no_sent == 'Pair':
+            st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
+        else:
+            st.write(create_heatmap(similarity, sentences))
