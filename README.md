@@ -2,7 +2,7 @@
 
 A simple app that enables you to play around with the three most common text similarity measures along with a few embedding methods.
 
-![gif of the app](https://landen.imgix.net/blog_dAYMuhFXJnolGCzL/assets/ogtAwhFrwTjrAeSM.gif "App Demo")
+![gif of the app](demo.gif "App Demo")
 
 You can find an in-depth explaination of the different similarity measures and text embedding methods [here](https://newscatcherapi.com/blog/ultimate-guide-to-text-similarity-with-python).
 
