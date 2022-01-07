@@ -175,7 +175,8 @@ if measure == 'Jaccard':
         st.write("Similarity Scores lie in the range of 0 to 1. \
              Here's the pairwise similarity score(s) of the above sentences:")
         if no_sent == 'Pair':
-            st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
+            st.subheader("Similarity")
+            st.metric(" ", round(similarity[0][1],3), delta=None, delta_color="normal")
         else:
             st.write(create_heatmap(similarity, sentences))
 else:
@@ -189,6 +190,7 @@ else:
         st.write("Similarity Scores lie in the range of 0 to 1. \
             Here's the pairwise similarity score(s) of the above sentences:")
         if no_sent == 'Pair':
-            st.metric("Similarity", round(similarity[0][1],3), delta=None, delta_color="normal")
+            st.subheader("Similarity")
+            st.metric(" ", round(similarity[0][1],3), delta=None, delta_color="normal")
         else:
             st.write(create_heatmap(similarity, sentences))
