@@ -97,8 +97,8 @@ def create_heatmap(similarity, sentences, words = False, cmap = "YlGnBu"):
     df = pd.DataFrame(similarity)
     df.columns = labels
     df.index = labels
-    fig, ax = plt.subplots(figsize=(7,7), vmin=0, vmax=1)
-    sns.heatmap(df, cmap=cmap)
+    fig, ax = plt.subplots(figsize=(7,7))
+    sns.heatmap(df, cmap=cmap, vmin=0, vmax=1)
     return fig
 
 # StreamLit App        
@@ -144,9 +144,9 @@ def get_embedding_and_sentences(sentences, metric):
 st.title('Text Similarity Measures Live Demo')
 st.write('Text Similarity Score measures how alike or different two text \
     documents are. As simple as the idea might sound, many Natural Language \
-    Processing applications use similarity behind the scenes. This app enables \
+    Processing applications use similarity behind the scenes. \n This app enables \
     you to play around with the three most common text similarity measures \
-    along with a few embedding methods. To learn more about text similarity \
+    along with a few embedding methods. \nTo learn more about text similarity \
     and embedding methods, read our in-depth article \
     [here](https://newscatcherapi.com/blog/text-similarity-measures-and-text-embedding-methods)')
 
