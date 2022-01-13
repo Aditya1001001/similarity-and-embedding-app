@@ -134,7 +134,7 @@ word_emb_methods = {'Bag Of Words':count_vectorizer,
 
 def get_embedding_and_sentences(sentences, metric):
 
-    emb_type = st.radio(
+    emb_type = st.sidebar.radio(
      "What's embedding type do you want to use to calculate similarity?",
      ('Bag Of Words', 'TF-IDF', 'Word2Vec'))
 
@@ -151,12 +151,12 @@ st.write('To learn more about text similarity \
     and embedding methods, read our in-depth article \
     [here](https://newscatcherapi.com/blog/ultimate-guide-to-text-similarity-with-python).')
 
-measure = st.radio(
+measure = st.sidebar.radio(
      "What's similarity metric do you want to try?",
      ('Jaccard', 'Euclidean', 'Cosine'))
 
 if measure == 'Jaccard':
-    no_sent = st.radio(
+    no_sent = st.sidebar.radio(
      "Pair of sentences or five sentences?",
      ('Pair', 'Five'))
     sentences = get_sentences(2 if no_sent == 'Pair' else 5)
@@ -180,7 +180,7 @@ if measure == 'Jaccard':
         else:
             st.write(create_heatmap(similarity, sentences))
 else:
-    no_sent = st.radio(
+    no_sent = st.sidebar.radio(
      "Pair of sentences or five sentences?",
      ('Pair', 'Five'))
     sentences = get_sentences(2 if no_sent == 'Pair' else 5)
